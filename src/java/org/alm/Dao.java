@@ -108,11 +108,11 @@ public final class Dao
      * @return
      * @throws Exception
      */
-    public static Test readTest(String id) throws Exception
-    {
+    public static Test readTest(String id) throws Exception {
         String testUrl = connector().buildEntityUrl("test", id);
 
-        return connector().get(testUrl, Test.class, null, null);
+        Entity entity = connector().get(testUrl, Test.class, null, null);
+        return new Test(entity);
     }
 
     /**
@@ -122,11 +122,11 @@ public final class Dao
      * @return
      * @throws Exception
      */
-    public static TestSet readTestSet(String id) throws Exception
-    {
+    public static TestSet readTestSet(String id) throws Exception {
         String testSetUrl = connector().buildEntityUrl("test-set", id);
+        Entity entity = connector().get(testSetUrl, TestSet.class, null, null);
 
-        return connector().get(testSetUrl, TestSet.class, null, null);
+        return new TestSet(entity);
     }
 
     /**
@@ -136,11 +136,11 @@ public final class Dao
      * @return
      * @throws Exception
      */
-    public static TestInstance readTestInstance(String id) throws Exception
-    {
+    public static TestInstance readTestInstance(String id) throws Exception {
         String testInstanceUrl = connector().buildEntityUrl("test-instance", id);
 
-        return connector().get(testInstanceUrl, TestInstance.class, null, null);
+        TestInstance entity = connector().get(testInstanceUrl, TestInstance.class, null, null);
+        return entity;
     }
 
     /**
@@ -150,8 +150,7 @@ public final class Dao
      * @return
      * @throws Exception
      */
-    public static TestInstances readTestInstances(String testSetId) throws Exception
-    {
+    public static TestInstances readTestInstances(String testSetId) throws Exception {
         String testInstancesUrl = connector().buildEntityCollectionUrl("test-instance");
 
         Map<String, String> criteria = new HashMap<String, String>();
@@ -180,8 +179,8 @@ public final class Dao
      * Create an attachment for run step entity
      *
      * @param runStepId
-     * @param fileName to use on serverside
-     * @param fileData content of file
+     * @param fileName  to use on serverside
+     * @param fileData  content of file
      * @return the xml of the metadata on the created attachment
      * @throws Exception
      */
@@ -281,7 +280,7 @@ public final class Dao
      *
      * @param entityUrl url of entity to attach the file to
      * @param fileName to use on serverside
-     * @param payload content of file
+     * @param fileData content of file
      * @return the xml of the metadata on the created attachment
      * @throws Exception
      */

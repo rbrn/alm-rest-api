@@ -67,6 +67,17 @@ public class Client
         return testSet;
     }
 
+    public TestInstance loadTestInstance(String testInstanceId) throws Exception
+    {
+        Log.info(String.format("Loading TestSet ... (test-set-id = %s)", testInstanceId));
+
+        TestInstance testSet = Dao.readTestInstance(testInstanceId);
+
+        Log.info(String.format("Loaded TestSet (test-set-id = %s, '%s')", testSet.id(), testSet.name()));
+
+        return testSet;
+    }
+
     /**
      * Read test instance entities
      *

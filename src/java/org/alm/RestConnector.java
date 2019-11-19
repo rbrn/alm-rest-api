@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.glassfish.jersey.uri.UriComponent;
@@ -182,7 +184,11 @@ public class RestConnector
         WebTarget webTarget = null;
 
         URI u = new URI(uri);
+
+       // ClientConfig config = new ClientConfig();
+
         Client client = ClientBuilder.newClient();
+        //client.register(new LoggingFilter(java.util.logging.Logger.getLogger(RestConnector.class.toString()), true));
 
         webTarget = client.target(u);
 
@@ -266,7 +272,12 @@ public class RestConnector
         {
             for (Entry<String, Cookie> cookie : cookies.entrySet())
             {
-                result = result.cookie(cookie.getValue());
+                result = result.cookie(new Cookie(
+                        cookie.getValue().getName(),
+                        cookie.getValue().getValue(),
+                        cookie.getValue().getPath(),
+                        cookie.getValue().getDomain(),
+                        cookie.getValue().getVersion()));
             }
         }
 
