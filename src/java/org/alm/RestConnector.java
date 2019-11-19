@@ -34,6 +34,7 @@ public class RestConnector
 {
     private final static Logger Log = LoggerFactory.getLogger(RestConnector.class);
 
+    private String protocol;
     private String host;
     private String port;
     private String domain;
@@ -55,12 +56,13 @@ public class RestConnector
         return RestConnectorHolder.Instance;
     }
 
-    public void init(String host, String port, String domain, String project)
+    public void init(String protocol, String host, String port, String domain, String project)
     {
         this.host = host;
         this.port = port;
         this.domain = domain;
         this.project = project;
+        this.protocol = protocol;
     }
 
     public static MultivaluedMap<String, Object> createBasicAuthHeader(String username, String password)
@@ -100,7 +102,7 @@ public class RestConnector
         {
             path = path.startsWith("/") ? path.substring(1) : path;
 
-            return String.format("http://%s:%s/%s", host, port, path);
+            return String.format("%s://%s:%s/%s", protocol, host, port, path);
         }
 
         throw new Exception("Host/Port are invalid. Call init() to initialize them properly.");

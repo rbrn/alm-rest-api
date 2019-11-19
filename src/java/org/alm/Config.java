@@ -34,6 +34,11 @@ public class Config
         this(createPropertyFile(content));
     }
 
+    public String protocol()
+    {
+        return properties.getProperty("protocol", "http");
+    }
+
     public String host()
     {
         return properties.getProperty("host", "");

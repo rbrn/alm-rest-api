@@ -19,7 +19,7 @@ public class Client
     {
         config = almConfig;
 
-        RestConnector.instance().init(
+        RestConnector.instance().init( config.protocol(),
                 config.host(), config.port(), config.domain(), config.project());
     }
 

@@ -30,12 +30,13 @@ public class TestRestConnector
     private static final String Port = "8181";
     private static final String Domain = "b2b";
     private static final String Project = "rx";
+    private static final String Protocol = "http";
 
     private HttpServer server;
 
     public TestRestConnector()
     {
-        RestConnector.instance().init(Host, Port, Domain, Project);
+        RestConnector.instance().init(Protocol, Host, Port, Domain, Project);
     }
 
     @BeforeClass

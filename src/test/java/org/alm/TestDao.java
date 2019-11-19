@@ -19,6 +19,7 @@ import static org.alm.Util.*;
 
 public class TestDao
 {
+    private final String protocol;
     private final String host;
     private final String port;
     private final String domain;
@@ -34,8 +35,9 @@ public class TestDao
         port = almProperty.getProperty("port");
         domain = almProperty.getProperty("domain");
         project = almProperty.getProperty("project");
+        protocol = almProperty.getProperty("protocol");
 
-        RestConnector.instance().init(host, port, domain, project);
+        RestConnector.instance().init(protocol, host, port, domain, project);
     }
 
     @BeforeClass
