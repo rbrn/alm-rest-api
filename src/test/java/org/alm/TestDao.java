@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.alm.model.*;
 
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -56,15 +57,6 @@ public class TestDao
         {
             server.shutdownNow();
         }
-    }
-
-    @Test(groups = { "authentication" })
-    public void isAutheticatedUnauthorized() throws Exception
-    {
-        Assert.assertEquals(
-                Dao.isAuthenticated(),
-                AlmApiStub.authenticationPoint(host, port) + "/authenticate",
-                "Server should refuses request and returns a reference to authentication point");
     }
 
     @Test(groups = { "authentication" })

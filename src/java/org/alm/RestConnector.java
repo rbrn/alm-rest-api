@@ -1,10 +1,12 @@
 package org.alm;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.uri.UriComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.client.Client;
@@ -12,23 +14,13 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.filter.LoggingFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.glassfish.jersey.uri.UriComponent;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class RestConnector
 {
@@ -76,6 +68,10 @@ public class RestConnector
         return authHeader;
     }
 
+    public String protocol()
+    {
+        return protocol;
+    }
     public String host()
     {
         return host;
@@ -187,9 +183,9 @@ public class RestConnector
 
         URI u = new URI(uri);
 
-       // ClientConfig config = new ClientConfig();
+        ClientConfig config = new ClientConfig();
 
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient(config);
         //client.register(new LoggingFilter(java.util.logging.Logger.getLogger(RestConnector.class.toString()), true));
 
         webTarget = client.target(u);

@@ -41,7 +41,7 @@ public class AlmApiStub
 
     public static String authenticationPoint(String host, String port)
     {
-        return String.format("http://%s:%s/qcbin/authentication-point", host, port);
+        return String.format("http://%s:%s/qcbin/api", host, port);
     }
 
     @GET
@@ -53,6 +53,26 @@ public class AlmApiStub
         if (cookie != null && cookieExists(cookie))
         {
             return Response.ok().build();
+        }
+        else
+        {
+            return unauthorizedResponse(uriInfo);
+        }
+    }
+
+    @GET
+    @Path("/api/authentication/sign-in")
+    public Response loginNew(
+            @HeaderParam(HttpHeaders.AUTHORIZATION) String authorization,
+            @Context UriInfo uriInfo)
+    {
+        if (authorization.contains("Basic"))
+        {
+            NewCookie cookie = new NewCookie("LWSSO_COOKIE_KEY", UUID.randomUUID().toString());
+
+            updateCookieHolder(cookie);
+
+            return Response.ok().cookie(cookie).build();
         }
         else
         {

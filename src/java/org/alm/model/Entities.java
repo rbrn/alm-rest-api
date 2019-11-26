@@ -14,9 +14,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Entities<T extends Entity>
 {
-    @XmlElementRefs({
-      @XmlElementRef(name="Entity", type=TestInstance.class),
-      @XmlElementRef(name="Entity", type=RunStep.class)})
     private List<T> entities;
 
     public Entities()

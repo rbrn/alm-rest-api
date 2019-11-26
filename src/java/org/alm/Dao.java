@@ -44,11 +44,8 @@ public final class Dao
 
             String authPoint = response.getHeaderString(HttpHeaders.WWW_AUTHENTICATE);
 
-            if (StringUtils.isNotBlank(authPoint))
-            {
-                authPoint = authPoint.split("=")[1].replace("\"", "");
-                authPoint += "/authenticate";
-
+            if (StringUtils.isNotBlank(authPoint)) {
+                authPoint = connector().buildUrl("qcbin/api/authentication/sign-in");
                 return authPoint;
             }
 
@@ -139,8 +136,8 @@ public final class Dao
     public static TestInstance readTestInstance(String id) throws Exception {
         String testInstanceUrl = connector().buildEntityUrl("test-instance", id);
 
-        TestInstance entity = connector().get(testInstanceUrl, TestInstance.class, null, null);
-        return entity;
+        Entity entity = connector().get(testInstanceUrl, TestInstance.class, null, null);
+        return new TestInstance(entity);
     }
 
     /**
@@ -157,6 +154,42 @@ public final class Dao
         criteria.put("query", "{cycle-id[" + testSetId + "]}");
 
         return connector().get(testInstancesUrl, TestInstances.class, null, criteria);
+    }
+
+
+    /**
+     * Read the test instance entities wuth the specified testSetId
+     *
+     * @param testInstanceName
+     * @return
+     * @throws Exception
+     */
+    public static TestInstance readTestInstanceByName(String testInstanceName) throws Exception {
+        String testInstancesUrl = connector().buildEntityCollectionUrl("test-instance");
+
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put("query", "{name[" + testInstanceName + "]}");
+
+        Entities entities = connector().get(testInstancesUrl, TestInstances.class, null, criteria);
+        Entity entity = (Entity) entities.entities().get(0);
+        return new TestInstance(entity);
+    }
+
+
+    /**
+     * Update run entity
+     *
+     * @param testInstance
+     * @return
+     * @throws Exception
+     */
+    public static TestInstance updateTestInstance(TestInstance testInstance) throws Exception {
+        String testInstanceUrl = connector().buildEntityUrl("test-instance", testInstance.id());
+
+        testInstance.clearBeforeUpdate();
+
+        Entity entity = connector().put(testInstanceUrl, TestInstance.class, null, null, testInstance);
+        return new TestInstance(entity);
     }
 
     /**
@@ -202,7 +235,8 @@ public final class Dao
     {
         String runsUrl =  connector().buildEntityCollectionUrl("run");
 
-        return connector().post(runsUrl, Run.class, null, null, run);
+        Entity entity = connector().post(runsUrl, Run.class, null, null, run);
+        return new Run(entity);
     }
 
     /**
@@ -232,7 +266,8 @@ public final class Dao
     {
         String runStepsUrl =  connector().buildEntityUrl("run", runId) + "/run-steps";
 
-        return connector().get(runStepsUrl, RunSteps.class, null, null);
+        Entities entities = connector().get(runStepsUrl, RunSteps.class, null, null);
+        return new RunSteps(entities);
     }
 
     /**
@@ -246,7 +281,8 @@ public final class Dao
     {
         String runStepsUrl = connector().buildEntityUrl("run", runStep.runId()) + "/run-steps";
 
-        return connector().post(runStepsUrl, RunStep.class, null, null, runStep);
+        Entity entity = connector().post(runStepsUrl, RunStep.class, null, null, runStep);
+        return new RunStep(entity);
     }
 
     /**
@@ -262,7 +298,8 @@ public final class Dao
 
         runStep.clearBeforeUpdate();
 
-        return connector().put(runStepUrl, RunStep.class, null, null, runStep);
+        Entity entity = connector().put(runStepUrl, RunStep.class, null, null, runStep);
+        return new RunStep(entity);
     }
 
     /**

@@ -75,7 +75,7 @@ public class TestClient
     @Test(dependsOnMethods = { "loadTestInstances" })
     public void loadTest() throws Exception
     {
-        test = client.loadTest(testInstances.entities().get(0));
+        test = client.loadTest(new TestInstance(testInstances.entities().get(0)));
 
         Assert.assertNotNull(test);
     }
@@ -83,7 +83,7 @@ public class TestClient
     @Test(dependsOnMethods = { "loadTest" })
     public void createRun() throws Exception
     {
-        run = client.createRun(testInstances.entities().get(0), test);
+        run = client.createRun(new TestInstance(testInstances.entities().get(0)), test);
 
         Assert.assertNotNull(run);
     }
